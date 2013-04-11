@@ -10,13 +10,15 @@ import org.bukkit.scoreboard.Objective;
 
 
 public class PlayerHealth extends JavaPlugin {
+	public static VersionChecker versionChecker;
 	
 	public void onEnable(){
 		// Register PlayerListener
 		this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 		
 		if(getConfig().getBoolean("check_updates")){
-			new VersionChecker(this).activate(getConfig().getInt("check_updates_interval")*60*20);
+			versionChecker = new VersionChecker(this);
+			versionChecker.activate(getConfig().getInt("check_updates_interval")*60*20);
 		}		
 		
 		getConfig().options().copyDefaults(true);
