@@ -1,5 +1,6 @@
 package denniss17.playerHealth;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.kitteh.tag.TagAPI;
 
 
 public class PlayerHealth extends JavaPlugin {
@@ -22,8 +24,24 @@ public class PlayerHealth extends JavaPlugin {
 	public void onEnable(){
 		tags = new HashMap<Player, Set<String>>();
 		
+		for(Player player : getServer().getOnlinePlayers()){
+			HashSet<String> set = new HashSet<String>();
+			set.add(player.getName());
+			tags.put(player, set);
+		}
+		
 		// Register PlayerListener
 		this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+		if(getServer().getPluginManager().getPlugin("TagAPI")!=null){
+			this.getServer().getPluginManager().registerEvents(new TagAPIListener(this), this);
+			for(Player player : getServer().getOnlinePlayers()){
+				// Resent tags for TagAPIListener to update tags
+				TagAPI.refreshPlayer(player);
+			}
+			getLogger().info("TagAPI found, hooked into it...");
+		}else{
+			getLogger().info("TagAPI not found, continuing without...");
+		}
 		
 		if(getConfig().getBoolean("check_updates")){
 			versionChecker = new VersionChecker(this);

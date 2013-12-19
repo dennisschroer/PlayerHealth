@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.kitteh.tag.PlayerReceiveNameTagEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerListener implements Listener {
 	
@@ -34,7 +34,7 @@ public class PlayerListener implements Listener {
 		plugin.tags.put(event.getPlayer(), set);
 		
 		if(event.getPlayer().hasPermission("playerhealth.*")){
-			if(PlayerHealth.versionChecker!=null && !PlayerHealth.versionChecker.latestVersion.equals(plugin.getDescription().getVersion())){
+			if(PlayerHealth.versionChecker!=null && PlayerHealth.versionChecker.latestVersion!=null && !PlayerHealth.versionChecker.latestVersion.equals(plugin.getDescription().getVersion())){
 				event.getPlayer().sendMessage("There is a new version of " + ChatColor.YELLOW + "PlayerHealth" + ChatColor.WHITE + " available!");
 			}
 		}
@@ -49,11 +49,10 @@ public class PlayerListener implements Listener {
 		plugin.tags.remove(event.getPlayer());
 	}
 	
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onNameTag(PlayerReceiveNameTagEvent event) {
-    	// A new tag is send -> add it to list
-    	plugin.tags.get(event.getNamedPlayer()).add(event.getTag());
-    }
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerRespawn(PlayerRespawnEvent event){
+		plugin.sendHealthOfPlayer(event.getPlayer(), (int) (event.getPlayer()).getMaxHealth());
+	}
     
     @EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerDamage(EntityDamageEvent event){
