@@ -1,8 +1,9 @@
 name: PlayerHealth
 main: denniss17.playerHealth.PlayerHealth
-version: 1.0.0
+version: 1.0.1
 author: Denniss17
 website: 'http://dev.bukkit.org/server-mods/playerhealth/'
+softdepend: [TagAPI]
 description: Show the health of players below their name
 commands:
    playerhealth:
