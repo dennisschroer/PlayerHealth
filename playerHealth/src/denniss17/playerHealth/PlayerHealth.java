@@ -18,6 +18,7 @@ public class PlayerHealth extends JavaPlugin {
 	public static VersionChecker versionChecker;
 	
 	public static final String OBJECTIVE_NAME = "playerhealth";
+	public static final int PROJECT_ID = 55658;
 	
 	public Map<Player, Set<String>> tags;
 	
@@ -44,7 +45,7 @@ public class PlayerHealth extends JavaPlugin {
 		}
 		
 		if(getConfig().getBoolean("check_updates")){
-			versionChecker = new VersionChecker(this);
+			versionChecker = new VersionChecker(this, PROJECT_ID);
 			versionChecker.activate(getConfig().getInt("check_updates_interval")*60*20);
 		}		
 		

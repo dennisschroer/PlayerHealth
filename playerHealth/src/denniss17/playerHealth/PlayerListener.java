@@ -34,7 +34,7 @@ public class PlayerListener implements Listener {
 		plugin.tags.put(event.getPlayer(), set);
 		
 		if(event.getPlayer().hasPermission("playerhealth.*")){
-			if(PlayerHealth.versionChecker!=null && PlayerHealth.versionChecker.latestVersion!=null && !PlayerHealth.versionChecker.latestVersion.equals(plugin.getDescription().getVersion())){
+			if(PlayerHealth.versionChecker!=null && PlayerHealth.versionChecker.getLatestVersionName()!=null && !PlayerHealth.versionChecker.getLatestVersionName().equals(plugin.getDescription().getVersion())){
 				event.getPlayer().sendMessage("There is a new version of " + ChatColor.YELLOW + "PlayerHealth" + ChatColor.WHITE + " available!");
 			}
 		}
