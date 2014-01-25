@@ -20,11 +20,17 @@ public class PlayerHealth extends JavaPlugin {
 	public static final String OBJECTIVE_NAME = "playerhealth";
 	public static final int PROJECT_ID = 55658;
 	
+	/**
+	 * A mapping from player to a set of tags this player has
+	 * By default, this set only contains player.getName(), but as tags are send
+	 * via TagAPI, they are added too
+	 */
 	public Map<Player, Set<String>> tags;
 	
 	public void onEnable(){
 		tags = new HashMap<Player, Set<String>>();
 		
+		// Fill mapping with online players
 		for(Player player : getServer().getOnlinePlayers()){
 			HashSet<String> set = new HashSet<String>();
 			set.add(player.getName());
@@ -33,6 +39,8 @@ public class PlayerHealth extends JavaPlugin {
 		
 		// Register PlayerListener
 		this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+		
+		// Check if TagAPI is installed
 		if(getServer().getPluginManager().getPlugin("TagAPI")!=null){
 			this.getServer().getPluginManager().registerEvents(new TagAPIListener(this), this);
 			for(Player player : getServer().getOnlinePlayers()){
@@ -44,6 +52,7 @@ public class PlayerHealth extends JavaPlugin {
 			getLogger().info("TagAPI not found, continuing without...");
 		}
 		
+		// Check if versionChecked should be enabled
 		if(getConfig().getBoolean("check_updates")){
 			versionChecker = new VersionChecker(this, PROJECT_ID);
 			versionChecker.activate(getConfig().getInt("check_updates_interval")*60*20);
@@ -76,6 +85,8 @@ public class PlayerHealth extends JavaPlugin {
 	public void sendHealthOfPlayer(Player player, int health){
 		Set<String> playerTags = tags.get(player);
 		Objective objective;
+		
+		// For each tag send the score
 		for(String tag : playerTags){
 			for(Player other : getServer().getOnlinePlayers()){
 				objective = other.getScoreboard().getObjective(OBJECTIVE_NAME);

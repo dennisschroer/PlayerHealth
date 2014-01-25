@@ -1,6 +1,6 @@
 name: PlayerHealth
 main: denniss17.playerHealth.PlayerHealth
-version: 1.1.0
+version: 1.1.1
 author: Denniss17
 website: 'http://dev.bukkit.org/server-mods/playerhealth/'
 softdepend: [TagAPI]

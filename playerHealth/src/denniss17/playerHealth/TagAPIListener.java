@@ -17,5 +17,7 @@ public class TagAPIListener implements Listener {
     public void onNameTag(PlayerReceiveNameTagEvent event) {
     	// A new tag is send -> add it to list
     	plugin.tags.get(event.getNamedPlayer()).add(event.getTag());
+    	// Resend the health of this player
+    	plugin.sendHealthOfPlayer(event.getNamedPlayer(), (int) event.getNamedPlayer().getHealth());
     }
 }
